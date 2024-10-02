@@ -9,5 +9,4 @@ public class DatingSiteApplication {
     public static void main(String[] args) {
         SpringApplication.run(DatingSiteApplication.class, args);
     }
-
 }
