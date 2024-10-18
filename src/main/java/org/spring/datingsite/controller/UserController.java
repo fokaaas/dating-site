@@ -1,6 +1,9 @@
 package org.spring.datingsite.controller;
 
-import org.spring.datingsite.model.User;
+import jakarta.servlet.http.HttpServletResponse;
+import org.spring.datingsite.entity.UserEntity;
+import org.spring.datingsite.service.UserService;
+import org.spring.datingsite.util.CookieUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,18 +11,26 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping()
 public class UserController {
 
-    @GetMapping("/form")
-    public String getCreateForm(Model model) {
-        model.addAttribute("user", new User());
-        return "create-user-form";
+    private final UserService userService;
+
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping()
-    public String create(User user, Model model) {
+    @GetMapping("/registration")
+    public String getCreateForm(Model model) {
+        model.addAttribute("user", new UserEntity());
+        return "registration-form";
+    }
+
+    @PostMapping("/success")
+    public String register(UserEntity user, Model model, HttpServletResponse response) {
         model.addAttribute("user", user);
-        return "create-user";
+        String token = userService.registerUser(user);
+        CookieUtil.setAuthCookie(token, response);
+        return "registration-success";
     }
 }

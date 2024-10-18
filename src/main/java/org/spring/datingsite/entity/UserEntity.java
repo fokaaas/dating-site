@@ -1,9 +1,11 @@
-package org.spring.datingsite.model;
+package org.spring.datingsite.entity;
 
 import java.time.LocalDate;
 
-public class User {
-    private Long id;
+public class UserEntity {
+    private String id;
+
+    private String session;
 
     private String firstName;
 
@@ -17,15 +19,19 @@ public class User {
 
     private String email;
 
+    private String password;
+
     private String phoneNumber;
 
     private LocalDate birthDate;
 
+    private String residence;
+
     private String aboutMe;
 
-    public User() {}
+    public UserEntity() {}
 
-    public User(Long id, String firstName, String middleName, String lastName, String sex, String photo, String email, String phoneNumber, LocalDate birthDate, String aboutMe) {
+    public UserEntity(String id, String firstName, String middleName, String lastName, String sex, String photo, String email, String phoneNumber, LocalDate birthDate, String aboutMe) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;
@@ -38,12 +44,20 @@ public class User {
         this.aboutMe = aboutMe;
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public String getSession() {
+        return session;
+    }
+
+    public void setSession(String session) {
+        this.session = session;
     }
 
     public String getFirstName() {
@@ -94,6 +108,14 @@ public class User {
         this.email = email;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -108,6 +130,14 @@ public class User {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public String getResidence() {
+        return residence;
+    }
+
+    public void setResidence(String residence) {
+        this.residence = residence;
     }
 
     public String getAboutMe() {
