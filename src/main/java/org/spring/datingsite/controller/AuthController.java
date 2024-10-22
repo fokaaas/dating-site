@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping()
-public class UserController {
+public class AuthController {
 
     private final UserService userService;
 
-    public UserController(UserService userService) {
+    public AuthController(UserService userService) {
         this.userService = userService;
     }
 
@@ -29,7 +29,7 @@ public class UserController {
     @PostMapping("/success")
     public String register(UserEntity user, Model model, HttpServletResponse response) {
         model.addAttribute("user", user);
-        String token = userService.registerUser(user);
+        String token = userService.createUser(user);
         CookieUtil.setAuthCookie(token, response);
         return "registration-success";
     }
