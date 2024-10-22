@@ -26,11 +26,25 @@ public class AuthController {
         return "registration-form";
     }
 
-    @PostMapping("/success")
+    @PostMapping("/submit-registration")
     public String register(UserEntity user, Model model, HttpServletResponse response) {
         model.addAttribute("user", user);
         String token = userService.createUser(user);
         CookieUtil.setAuthCookie(token, response);
         return "registration-success";
+    }
+
+    @GetMapping("/login")
+    public String getLoginForm(Model model) {
+        model.addAttribute("user", new UserEntity());
+        return "login-form";
+    }
+
+    @PostMapping("/submit-login")
+    public String login(UserEntity user, Model model, HttpServletResponse response) {
+        model.addAttribute("user", user);
+        String token = userService.login(user);
+        CookieUtil.setAuthCookie(token, response);
+        return "redirect:/";
     }
 }

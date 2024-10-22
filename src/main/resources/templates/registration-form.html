@@ -10,7 +10,7 @@
     <div class="card bg-white bg-opacity-95 rounded-3 shadow p-3" style="width: 100%; max-width: 500px;">
         <h4 class="mb-3 text-center">Create Profile</h4>
 
-        <form th:action="@{/success}" th:object="${user}" method="post" class="needs-validation" novalidate>
+        <form th:action="@{/submit-registration}" th:object="${user}" method="post" class="needs-validation" novalidate>
             <!-- Email -->
             <div class="mb-2">
                 <label for="email" class="form-label fw-semibold">Email<span class="text-danger">*</span></label>

@@ -3,9 +3,11 @@ package org.spring.datingsite.repository;
 import org.spring.datingsite.entity.UserEntity;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+
 @Repository
 public class UserRepository {
-    private final UserEntity[] users = new UserEntity[100]; // db mock
+    private final ArrayList<UserEntity> users = new ArrayList<>(); // db mock
 
     public UserEntity findByEmail(String email) {
         for (UserEntity user : users) {
@@ -17,12 +19,19 @@ public class UserRepository {
     }
 
     public void create(UserEntity user) {
-        for (int i = 0; i < users.length; i++) {
-            if (users[i] == null) {
-                System.out.println("User created: " + user.getEmail());
-                users[i] = user;
-                return;
+        users.add(user);
+    }
+
+    public ArrayList<UserEntity> findMany() {
+        return users;
+    }
+
+    public UserEntity findBySession(String session) {
+        for (UserEntity user : users) {
+            if (user.getSession().equals(session)) {
+                return user;
             }
         }
+        return null;
     }
 }
