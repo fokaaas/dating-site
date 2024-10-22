@@ -34,4 +34,13 @@ public class UserRepository {
         }
         return null;
     }
+
+    public UserEntity findById(String id) {
+        for (UserEntity user : users) {
+            if (user.getId().equals(id)) {
+                return user;
+            }
+        }
+        return null;
+    }
 }

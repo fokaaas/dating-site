@@ -72,4 +72,10 @@ public class UserService {
     private int calculateAge(LocalDate birthDate) {
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
+
+    public UserEntity getUser(String userId) {
+        UserEntity user = userRepository.findById(userId);
+        user.setAge(calculateAge(user.getBirthDate()));
+        return user;
+    }
 }

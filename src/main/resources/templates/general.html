@@ -21,7 +21,9 @@
     <div class="row">
       <div th:each="user : ${users}" class="col-md-4 mb-3">
         <div class="card">
-          <img th:src="${user.photo}" class="card-img-top" alt="User Photo">
+          <a th:href="@{/user/{id}(id=${user.id})}">
+            <img th:src="${user.photo}" class="card-img-top" alt="User Photo">
+          </a>
           <div class="card-body">
             <h5 class="card-title" th:text="${user.firstName}">User Name</h5>
             <p class="card-text">Age: <span th:text="${user.age}">Age</span></p>
