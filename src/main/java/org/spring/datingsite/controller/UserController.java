@@ -1,7 +1,6 @@
 package org.spring.datingsite.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.spring.datingsite.entity.UserEntity;
 import org.spring.datingsite.service.UserService;
 import org.springframework.stereotype.Controller;

@@ -14,6 +14,7 @@ public class UserEntity {
     private String password;
     private String phoneNumber;
     private LocalDate birthDate;
+    private Integer age;
     private String residence;
     private String aboutMe;
 
@@ -60,6 +61,10 @@ public class UserEntity {
 
     public LocalDate getBirthDate() {
         return birthDate;
+    }
+
+    public Integer getAge() {
+        return age;
     }
 
     public String getResidence() {
@@ -113,6 +118,10 @@ public class UserEntity {
 
     public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
     public void setResidence(String residence) {
