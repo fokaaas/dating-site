@@ -21,7 +21,7 @@
     <div class="row">
       <div th:each="user : ${users}" class="col-md-4 mb-3">
         <div class="card">
-          <a th:href="@{/user/{id}(id=${user.id})}">
+          <a th:href="@{/users/{id}(id=${user.id})}">
             <img th:src="${user.photo}" class="card-img-top" alt="User Photo">
           </a>
           <div class="card-body">

@@ -45,6 +45,6 @@ public class AuthController {
         model.addAttribute("user", user);
         String token = userService.login(user);
         CookieUtil.setAuthCookie(token, response);
-        return "redirect:/";
+        return "redirect:/users";
     }
 }

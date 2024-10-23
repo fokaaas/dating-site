@@ -26,7 +26,7 @@ public class UserController {
         return "general";
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/{id}")
     public String getUserProfile(@PathVariable("id") String userId, Model model) {
         UserEntity user = userService.getUser(userId);
         model.addAttribute("user", user);
