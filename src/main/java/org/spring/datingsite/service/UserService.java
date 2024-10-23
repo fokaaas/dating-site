@@ -1,8 +1,11 @@
 package org.spring.datingsite.service;
 
+import org.spring.datingsite.entity.InvitationEntity;
 import org.spring.datingsite.entity.UserEntity;
+import org.spring.datingsite.enums.InvitationStateEnum;
 import org.spring.datingsite.exception.EmailAlreadyExistsException;
 import org.spring.datingsite.exception.InvalidPasswordException;
+import org.spring.datingsite.repository.InvitationRepo;
 import org.spring.datingsite.repository.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -15,9 +18,11 @@ import java.util.UUID;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final InvitationRepo invitationRepo;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository , InvitationRepo invitationRepo) {
         this.userRepository = userRepository;
+        this.invitationRepo = invitationRepo;
     }
 
     public String createUser(UserEntity user) {
@@ -77,5 +82,36 @@ public class UserService {
         UserEntity user = userRepository.findById(userId);
         user.setAge(calculateAge(user.getBirthDate()));
         return user;
+    }
+
+    public void inviteUser(String currentUserId, String userId) {
+        invitationRepo.create(new InvitationEntity(currentUserId, userId, false));
+    }
+
+    public void acceptInvitation(String fromUserId, String toUserId) {
+        invitationRepo.update(fromUserId, toUserId, true);
+    }
+
+    public void rejectInvitation(String fromUserId, String toUserId) {
+        invitationRepo.delete(fromUserId, toUserId);
+    }
+
+    public UserEntity[] getInviters(String userId) {
+        ArrayList<InvitationEntity> invitations = invitationRepo.findManyByUserId(userId);
+        ArrayList<UserEntity> inviters = new ArrayList<>();
+        invitations.forEach(invitation -> {
+            UserEntity user = userRepository.findById(invitation.getFromUserId());
+            user.setAge(calculateAge(user.getBirthDate()));
+            inviters.add(user);
+        });
+        return inviters.toArray(UserEntity[]::new);
+    }
+
+    public InvitationStateEnum getInvitationState(String fromUserId, String toUserId) {
+        InvitationEntity invitation = invitationRepo.find(fromUserId, toUserId);
+        if (invitation == null) {
+            return InvitationStateEnum.NONE;
+        }
+        return invitation.getIsAccepted() ? InvitationStateEnum.ACCEPTED : InvitationStateEnum.PENDING;
     }
 }

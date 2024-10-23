@@ -9,23 +9,29 @@
 <body>
 <div class="container mt-5">
     <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <div class="card">
-                <img th:src="${user.photo}" class="card-img-top" alt="User Photo">
-                <div class="card-body">
-                    <h3 class="card-title" th:text="${user.firstName} + ' ' + ${user.lastName}">Full Name</h3>
-                    <p class="card-text">Gender: <span th:text="${user.sex}">User Sex</span></p>
-                    <p class="card-text">Age: <span th:text="${user.age}">User Age</span></p>
-                    <p class="card-text">Location: <span th:text="${user.residence}">User Residence</span></p>
-                    <p class="card-text">Phone Number: <span th:text="${user.phoneNumber}">User Phone Number</span></p>
-                    <p class="card-text">About Me: <span th:text="${user.aboutMe}">Use About Me</span></p>
-                    <a href="/users" class="btn btn-primary">Back to Users</a>
-                </div>
+        <div class="col-md-12">
+            <div class="d-flex flex-column align-items-center">
+                <img th:src="${user.photo}" class="rounded-circle mb-3" alt="User Photo" style="width: 150px; height: 150px;">
+                <h3 class="mb-3" th:text="${user.firstName} + ' ' + ${user.lastName}">Full Name</h3>
+                <p class="mb-1">Gender: <span th:text="${user.sex}">User Sex</span></p>
+                <p class="mb-1">Age: <span th:text="${user.age}">User Age</span></p>
+                <p class="mb-1">Location: <span th:text="${user.residence}">User Residence</span></p>
+                <p class="mb-1"><strong>Phone Number:</strong> <strong><span th:text="${user.phoneNumber}">User Phone Number</span></strong></p>
+                <p class="mb-3">About Me: <span th:text="${user.aboutMe}">User About Me</span></p>
+
+                <form id="actionForm" action="" method="POST">
+                    <button id="actionButton" class="btn" type="submit"
+                            th:data-invitation-state="${invitationState}"
+                            th:data-user-id="${user.id}"></button>
+                </form>
+
+                <a href="/users" class="btn btn-primary mt-3">Back to Users</a>
             </div>
         </div>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/invite-state.js"></script>
 </body>
 </html>

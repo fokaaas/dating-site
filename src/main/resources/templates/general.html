@@ -13,6 +13,22 @@
     <div class="d-flex align-items-center">
       <img th:src="${currentUser.photo}" alt="User Photo" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
       <span class="ms-2 fw-semibold" th:text="${currentUser.firstName}">User Name</span>
+      <div class="dropdown ms-3">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="invitationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+          Invitations
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="invitationDropdown">
+          <li th:each="inviter : ${inviters}" class="inviter-item">
+            <div class="dropdown-item d-flex align-items-center">
+              <img th:src="${inviter.photo}" alt="Inviter Photo" class="rounded-circle" style="width: 30px; height: 30px; object-fit: cover; margin-right: 10px;">
+              <span th:text="${inviter.firstName} + ' (' + inviter.age + ' years)'">Inviter Name (Age)</span>
+              <form action="@{/users/{id}/invitations(id=${inviter.id})}" method="PATCH" class="ms-auto" onsubmit="removeInviter(event, this)">
+                <button type="submit" class="btn btn-success btn-sm">Accept</button>
+              </form>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </header>
 
@@ -20,9 +36,9 @@
     <h2 class="text-center mb-4">~ find a lover one ~</h2>
     <div class="row">
       <div th:each="user : ${users}" class="col-md-4 mb-3">
-        <div class="card">
+        <div class="card rounded">
           <a th:href="@{/users/{id}(id=${user.id})}">
-            <img th:src="${user.photo}" class="card-img-top" alt="User Photo">
+            <img th:src="${user.photo}" class="card-img-top rounded-top" alt="User Photo">
           </a>
           <div class="card-body">
             <h5 class="card-title" th:text="${user.firstName}">User Name</h5>
@@ -36,5 +52,13 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function removeInviter(event, form) {
+    event.preventDefault();
+    const inviterItem = form.closest('.inviter-item');
+    inviterItem.remove();
+    form.submit();
+  }
+</script>
 </body>
 </html>
