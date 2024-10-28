@@ -25,6 +25,9 @@
               <form th:action="@{/users/{id}/invitations-accept(id=${inviter.id})}" method="post" class="ms-auto">
                 <button type="submit" class="btn btn-success btn-sm">Accept</button>
               </form>
+              <form th:action="@{/users/{id}/invitations-reject(id=${inviter.id})}" method="post" class="ms-2">
+                <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+              </form>
             </div>
           </li>
         </ul>
