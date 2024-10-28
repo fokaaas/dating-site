@@ -93,6 +93,10 @@ public class UserService {
     }
 
     public void rejectInvitation(String fromUserId, String toUserId) {
+        InvitationEntity invitation = invitationRepo.find(fromUserId, toUserId);
+        if (invitation == null) {
+            invitationRepo.delete(toUserId, fromUserId);
+        }
         invitationRepo.delete(fromUserId, toUserId);
     }
 
@@ -100,18 +104,28 @@ public class UserService {
         ArrayList<InvitationEntity> invitations = invitationRepo.findManyByUserId(userId);
         ArrayList<UserEntity> inviters = new ArrayList<>();
         invitations.forEach(invitation -> {
-            UserEntity user = userRepository.findById(invitation.getFromUserId());
-            user.setAge(calculateAge(user.getBirthDate()));
-            inviters.add(user);
+            if (!invitation.getIsAccepted()) {
+                UserEntity user = userRepository.findById(invitation.getFromUserId());
+                user.setAge(calculateAge(user.getBirthDate()));
+                inviters.add(user);
+            }
         });
         return inviters.toArray(UserEntity[]::new);
     }
 
     public InvitationStateEnum getInvitationState(String fromUserId, String toUserId) {
-        InvitationEntity invitation = invitationRepo.find(fromUserId, toUserId);
-        if (invitation == null) {
-            return InvitationStateEnum.NONE;
-        }
-        return invitation.getIsAccepted() ? InvitationStateEnum.ACCEPTED : InvitationStateEnum.PENDING;
+        InvitationEntity fromUserInvitation = invitationRepo.find(fromUserId, toUserId);
+        if (fromUserInvitation != null) return getState(fromUserInvitation, true);
+        InvitationEntity toUserInvitation = invitationRepo.find(toUserId, fromUserId);
+        if (toUserInvitation != null) return getState(toUserInvitation, false);
+        return InvitationStateEnum.NONE;
+    }
+
+    private InvitationStateEnum getState(InvitationEntity invitation, boolean isFromUser) {
+        return invitation.getIsAccepted()
+                ? InvitationStateEnum.ACCEPTED
+                : isFromUser
+                    ? InvitationStateEnum.PENDING_INVITER
+                    : InvitationStateEnum.PENDING_INVITEE;
     }
 }

@@ -12,14 +12,16 @@
         <div class="col-md-12">
             <div class="d-flex flex-column align-items-center">
                 <img th:src="${user.photo}" class="rounded-circle mb-3" alt="User Photo" style="width: 150px; height: 150px;">
-                <h3 class="mb-3" th:text="${user.firstName} + ' ' + ${user.lastName}">Full Name</h3>
-                <p class="mb-1">Gender: <span th:text="${user.sex}">User Sex</span></p>
-                <p class="mb-1">Age: <span th:text="${user.age}">User Age</span></p>
-                <p class="mb-1">Location: <span th:text="${user.residence}">User Residence</span></p>
-                <p class="mb-1"><strong>Phone Number:</strong> <strong><span th:text="${user.phoneNumber}">User Phone Number</span></strong></p>
-                <p class="mb-3">About Me: <span th:text="${user.aboutMe}">User About Me</span></p>
+                <h3 class="mb-3 fw-bold" th:text="${user.firstName} + ' ' + ${user.lastName}">Full Name</h3>
+                <p class="mb-1"><strong>Gender: </strong><span th:text="${user.sex}">User Sex</span></p>
+                <p class="mb-1"><strong>Age: </strong><span th:text="${user.age}">User Age</span></p>
+                <p class="mb-1"><strong>Location: </strong><span th:text="${user.residence}">User Residence</span></p>
+                <p class="mb-1 text-danger fw-bold" id="phoneParagraph" style="display: none;">
+                  Phone Number: <span th:text="${user.phoneNumber}">User Phone Number</span>
+                </p>
+                <p class="mb-3"><strong>About Me:</strong><span th:text="${user.aboutMe}">User About Me</span></p>
 
-                <form id="actionForm" action="" method="POST">
+                <form id="actionForm" action="" method="post">
                     <button id="actionButton" class="btn" type="submit"
                             th:data-invitation-state="${invitationState}"
                             th:data-user-id="${user.id}"></button>

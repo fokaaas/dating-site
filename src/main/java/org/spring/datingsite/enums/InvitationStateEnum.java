@@ -2,6 +2,7 @@ package org.spring.datingsite.enums;
 
 public enum InvitationStateEnum {
     NONE,
-    PENDING,
+    PENDING_INVITER,
+    PENDING_INVITEE,
     ACCEPTED,
 }

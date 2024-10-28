@@ -34,20 +34,23 @@ public class UserController {
     }
 
     @PostMapping("/{id}/invitations")
-    public void inviteUser(@PathVariable("id") String userId, HttpServletRequest request) {
+    public String inviteUser(@PathVariable("id") String userId, HttpServletRequest request) {
         UserEntity currentUser = (UserEntity) request.getAttribute("currentUser");
         userService.inviteUser(currentUser.getId(), userId);
+        return "redirect:/users/" + userId;
     }
 
-    @PatchMapping("/{id}/invitations")
-    public void acceptInvitation(@PathVariable("id") String userId, HttpServletRequest request) {
+    @PostMapping("/{id}/invitations-accept")
+    public String acceptInvitation(@PathVariable("id") String userId, HttpServletRequest request) {
         UserEntity currentUser = (UserEntity) request.getAttribute("currentUser");
-        userService.acceptInvitation(currentUser.getId(), userId);
+        userService.acceptInvitation(userId, currentUser.getId());
+        return "redirect:/users";
     }
 
-    @DeleteMapping("/{id}/invitations")
-    public void rejectInvitation(@PathVariable("id") String userId, HttpServletRequest request) {
+    @PostMapping("/{id}/invitations-reject")
+    public String rejectInvitation(@PathVariable("id") String userId, HttpServletRequest request) {
         UserEntity currentUser = (UserEntity) request.getAttribute("currentUser");
         userService.rejectInvitation(currentUser.getId(), userId);
+        return "redirect:/users/" + userId;
     }
 }
