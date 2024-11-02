@@ -12,7 +12,7 @@
     <h1 class="text-primary">Dating Site</h1>
     <div class="d-flex align-items-center">
       <img th:src="${currentUser.photo}" alt="User Photo" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-      <a th:href="@{/users/profile/edit}" class="ms-2 fw-semibold text-decoration-none" th:text="${currentUser.firstName}">User Name</a>
+      <a th:href="@{/users/edit}" class="ms-2 fw-semibold text-decoration-none" th:text="${currentUser.firstName}">User Name</a>
 
       <!-- Invitations Dropdown Button -->
       <div class="dropdown ms-3">
@@ -39,22 +39,30 @@
   </header>
 
   <!-- User Search Form -->
-  <form th:action="@{/users/search}" method="get" class="my-4">
+  <form th:action="@{/users}" th:object="${search}" method="get" class="my-4">
     <div class="row">
       <div class="col-md-3">
-        <input type="text" name="keyword" class="form-control" placeholder="Ім'я/прізвище">
+        <input type="text" th:field="*{keyword}" class="form-control" placeholder="Name">
       </div>
       <div class="col-md-2">
-        <input type="number" name="minAge" class="form-control" placeholder="Мін. вік">
+      <select th:field="*{sex}" class="form-control">
+        <option value="">Gender</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+      <div class="col-md-2">
+        <input type="number" th:field="*{minAge}" class="form-control" placeholder="Min. age">
       </div>
       <div class="col-md-2">
-        <input type="number" name="maxAge" class="form-control" placeholder="Макс. вік">
-      </div>
-      <div class="col-md-3">
-        <input type="text" name="location" class="form-control" placeholder="Локація">
+        <input type="number" th:field="*{maxAge}" class="form-control" placeholder="Max. age">
       </div>
       <div class="col-md-2">
-        <button type="submit" class="btn btn-primary w-100">Пошук</button>
+        <input type="text" th:field="*{location}" class="form-control" placeholder="Location">
+      </div>
+      <div class="col-md-1">
+        <button type="submit" class="btn btn-primary w-100">Search</button>
       </div>
     </div>
   </form>
