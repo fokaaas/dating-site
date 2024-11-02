@@ -9,7 +9,7 @@
 <body>
 <div class="container mt-5">
     <h1 class="text-center text-primary mb-4">Edit Profile</h1>
-    <form th:action="@{/users/profile/edit}" th:object="${user}" method="post" class="mx-auto" style="max-width: 600px;">
+    <form th:action="@{/users/edit}" th:object="${user}" method="post" class="mx-auto" style="max-width: 600px;">
         <div class="mb-3">
             <label for="firstName" class="form-label">First Name:</label>
             <input type="text" id="firstName" th:field="*{firstName}" class="form-control" required />
@@ -55,11 +55,6 @@
         </div>
 
         <div class="mb-3">
-            <label for="age" class="form-label">Age:</label>
-            <input type="number" id="age" th:field="*{age}" class="form-control" required />
-        </div>
-
-        <div class="mb-3">
             <label for="residence" class="form-label">Residence:</label>
             <input type="text" id="residence" th:field="*{residence}" class="form-control" />
         </div>
@@ -70,7 +65,8 @@
         </div>
 
         <div class="text-center">
-            <button type="submit" class="btn btn-primary px-4">Save Changes</button>
+            <a th:href="@{/users}" class="btn btn-secondary me-2 d-inline-block px-4">Back to Users</a>
+            <button type="submit" class="btn btn-primary d-inline-block px-4">Save Changes</button>
         </div>
     </form>
 </div>

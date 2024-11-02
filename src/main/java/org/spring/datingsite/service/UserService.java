@@ -1,6 +1,7 @@
 package org.spring.datingsite.service;
 
 import org.spring.datingsite.entity.InvitationEntity;
+import org.spring.datingsite.entity.SearchEntity;
 import org.spring.datingsite.entity.UserEntity;
 import org.spring.datingsite.enums.InvitationStateEnum;
 import org.spring.datingsite.exception.EmailAlreadyExistsException;
@@ -68,14 +69,6 @@ public class UserService {
         return userRepository.findBySession(token);
     }
 
-    public UserEntity[] getAllUsers(String currentUserId) {
-        ArrayList<UserEntity> users = userRepository.findMany();
-        users.forEach(user -> user.setAge(calculateAge(user.getBirthDate())));
-        return users.stream()
-                .filter(user -> !user.getId().equals(currentUserId))
-                .toArray(UserEntity[]::new);
-    }
-
     private int calculateAge(LocalDate birthDate) {
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
@@ -86,53 +79,39 @@ public class UserService {
         return user;
     }
 
-    public void updateUser(UserEntity updatedUser) {
-        UserEntity existingUser = userRepository.findById(updatedUser.getId());
-        if (existingUser == null) {
-            throw new IllegalArgumentException("User not found");
-        }
+    public void updateUser(UserEntity currentUser, UserEntity updatedUser) {
+        currentUser.setFirstName(updatedUser.getFirstName());
+        currentUser.setMiddleName(updatedUser.getMiddleName());
+        currentUser.setLastName(updatedUser.getLastName());
+        currentUser.setSex(updatedUser.getSex());
+        currentUser.setPhoto(updatedUser.getPhoto());
+        currentUser.setEmail(updatedUser.getEmail());
+        currentUser.setPhoneNumber(updatedUser.getPhoneNumber());
+        currentUser.setBirthDate(updatedUser.getBirthDate());
+        currentUser.setResidence(updatedUser.getResidence());
+        currentUser.setAboutMe(updatedUser.getAboutMe());
 
-        existingUser.setFirstName(updatedUser.getFirstName());
-        existingUser.setMiddleName(updatedUser.getMiddleName());
-        existingUser.setLastName(updatedUser.getLastName());
-        existingUser.setSex(updatedUser.getSex());
-        existingUser.setPhoto(updatedUser.getPhoto());
-        existingUser.setEmail(updatedUser.getEmail());
-        existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
-        existingUser.setBirthDate(updatedUser.getBirthDate());
-        existingUser.setResidence(updatedUser.getResidence());
-        existingUser.setAboutMe(updatedUser.getAboutMe());
+        currentUser.setAge(calculateAge(updatedUser.getBirthDate()));
 
-        existingUser.setAge(calculateAge(existingUser.getBirthDate()));
-
-        userRepository.update(existingUser);
+        userRepository.update(currentUser);
     }
 
-    public List<UserEntity> getMen() {
+    public List<UserEntity> getUsers(String currentUserId, SearchEntity search) {
         return userRepository.findManyUsers().stream()
-                .filter(user -> "Male".equalsIgnoreCase(user.getSex()))
-                .collect(Collectors.toList());
-    }
-
-    public List<UserEntity> getWomen() {
-        return userRepository.findManyUsers().stream()
-                .filter(user -> "Female".equalsIgnoreCase(user.getSex()))
-                .collect(Collectors.toList());
-    }
-
-    public List<UserEntity> searchUsers(String keyword, Integer minAge, Integer maxAge, String location) {
-        return userRepository.findManyUsers().stream()
-                .filter(user ->
-                        (keyword == null ||
-                                user.getFirstName().toLowerCase().contains(keyword.toLowerCase()) ||
-                                user.getLastName().toLowerCase().contains(keyword.toLowerCase()))
+                .filter(user -> !user.getId().equals(currentUserId))
+                .filter(user -> (search.getSex() == null || user.getSex().toLowerCase().contains(search.getSex().toLowerCase()))
                 )
                 .filter(user ->
-                        (minAge == null || user.getAge() >= minAge) &&
-                                (maxAge == null || user.getAge() <= maxAge)
+                        (search.getKeyword() == null ||
+                                user.getFirstName().toLowerCase().contains(search.getKeyword().toLowerCase()) ||
+                                user.getLastName().toLowerCase().contains(search.getKeyword().toLowerCase()))
                 )
                 .filter(user ->
-                        (location == null || user.getResidence().toLowerCase().contains(location.toLowerCase()))
+                        (search.getMinAge() == null || user.getAge() >= search.getMinAge()) &&
+                                (search.getMaxAge() == null || user.getAge() <= search.getMaxAge())
+                )
+                .filter(user ->
+                        (search.getLocation() == null || user.getResidence().toLowerCase().contains(search.getLocation().toLowerCase()))
                 )
                 .collect(Collectors.toList());
     }
@@ -153,7 +132,7 @@ public class UserService {
         invitationRepo.delete(fromUserId, toUserId);
     }
 
-    public UserEntity[] getInviters(String userId) {
+    public ArrayList<UserEntity> getInviters(String userId) {
         ArrayList<InvitationEntity> invitations = invitationRepo.findManyByUserId(userId);
         ArrayList<UserEntity> inviters = new ArrayList<>();
         invitations.forEach(invitation -> {
@@ -163,7 +142,7 @@ public class UserService {
                 inviters.add(user);
             }
         });
-        return inviters.toArray(UserEntity[]::new);
+        return inviters;
     }
 
     public InvitationStateEnum getInvitationState(String fromUserId, String toUserId) {
