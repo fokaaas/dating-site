@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -82,6 +84,57 @@ public class UserService {
         UserEntity user = userRepository.findById(userId);
         user.setAge(calculateAge(user.getBirthDate()));
         return user;
+    }
+
+    public void updateUser(UserEntity updatedUser) {
+        UserEntity existingUser = userRepository.findById(updatedUser.getId());
+        if (existingUser == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        existingUser.setFirstName(updatedUser.getFirstName());
+        existingUser.setMiddleName(updatedUser.getMiddleName());
+        existingUser.setLastName(updatedUser.getLastName());
+        existingUser.setSex(updatedUser.getSex());
+        existingUser.setPhoto(updatedUser.getPhoto());
+        existingUser.setEmail(updatedUser.getEmail());
+        existingUser.setPhoneNumber(updatedUser.getPhoneNumber());
+        existingUser.setBirthDate(updatedUser.getBirthDate());
+        existingUser.setResidence(updatedUser.getResidence());
+        existingUser.setAboutMe(updatedUser.getAboutMe());
+
+        existingUser.setAge(calculateAge(existingUser.getBirthDate()));
+
+        userRepository.update(existingUser);
+    }
+
+    public List<UserEntity> getMen() {
+        return userRepository.findManyUsers().stream()
+                .filter(user -> "Male".equalsIgnoreCase(user.getSex()))
+                .collect(Collectors.toList());
+    }
+
+    public List<UserEntity> getWomen() {
+        return userRepository.findManyUsers().stream()
+                .filter(user -> "Female".equalsIgnoreCase(user.getSex()))
+                .collect(Collectors.toList());
+    }
+
+    public List<UserEntity> searchUsers(String keyword, Integer minAge, Integer maxAge, String location) {
+        return userRepository.findManyUsers().stream()
+                .filter(user ->
+                        (keyword == null ||
+                                user.getFirstName().toLowerCase().contains(keyword.toLowerCase()) ||
+                                user.getLastName().toLowerCase().contains(keyword.toLowerCase()))
+                )
+                .filter(user ->
+                        (minAge == null || user.getAge() >= minAge) &&
+                                (maxAge == null || user.getAge() <= maxAge)
+                )
+                .filter(user ->
+                        (location == null || user.getResidence().toLowerCase().contains(location.toLowerCase()))
+                )
+                .collect(Collectors.toList());
     }
 
     public void inviteUser(String currentUserId, String userId) {

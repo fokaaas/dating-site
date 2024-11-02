@@ -18,6 +18,17 @@ public class UserEntity {
     private String residence;
     private String aboutMe;
 
+    public UserEntity(String id, String firstName, String lastName, String sex, String photo, String email, Integer age, String residence) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.sex = sex;
+        this.photo = photo;
+        this.email = email;
+        this.age = age;
+        this.residence = residence;
+    }
+
     // Getters
     public String getId() {
         return id;
