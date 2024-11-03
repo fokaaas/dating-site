@@ -97,9 +97,9 @@ public class UserService {
     }
 
     public List<UserEntity> getUsers(String currentUserId, SearchEntity search) {
-        return userRepository.findManyUsers().stream()
+        return userRepository.findMany().stream()
                 .filter(user -> !user.getId().equals(currentUserId))
-                .filter(user -> (search.getSex() == null || user.getSex().toLowerCase().contains(search.getSex().toLowerCase()))
+                .filter(user -> (search.getSex() == null || search.getSex().isEmpty() || user.getSex().equals(search.getSex()))
                 )
                 .filter(user ->
                         (search.getKeyword() == null ||
@@ -107,12 +107,13 @@ public class UserService {
                                 user.getLastName().toLowerCase().contains(search.getKeyword().toLowerCase()))
                 )
                 .filter(user ->
-                        (search.getMinAge() == null || user.getAge() >= search.getMinAge()) &&
-                                (search.getMaxAge() == null || user.getAge() <= search.getMaxAge())
+                        (search.getMinAge() == null || calculateAge(user.getBirthDate()) >= search.getMinAge()) &&
+                                (search.getMaxAge() == null || calculateAge(user.getBirthDate()) <= search.getMaxAge())
                 )
                 .filter(user ->
                         (search.getLocation() == null || user.getResidence().toLowerCase().contains(search.getLocation().toLowerCase()))
                 )
+                .peek(user -> user.setAge(calculateAge(user.getBirthDate())))
                 .collect(Collectors.toList());
     }
 
