@@ -31,7 +31,7 @@ public class UserController {
         model.addAttribute("currentUser", currentUser);
         model.addAttribute("users", users);
         model.addAttribute("inviters", inviters);
-        model.addAttribute("search", new SearchEntity());
+        model.addAttribute("search", search);
 
         return "general";
     }

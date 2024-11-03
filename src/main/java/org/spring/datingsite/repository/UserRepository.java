@@ -54,8 +54,4 @@ public class UserRepository {
         }
         return null;
     }
-
-    public ArrayList<UserEntity> findManyUsers() {
-        return users;
-    }
 }
