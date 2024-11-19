@@ -1,6 +1,6 @@
-package org.spring.datingsite.repository;
+package org.spring.datingsite.user;
 
-import org.spring.datingsite.entity.UserEntity;
+import org.spring.datingsite.user.entity.UserEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

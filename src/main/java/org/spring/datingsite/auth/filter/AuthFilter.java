@@ -1,7 +1,7 @@
-package org.spring.datingsite.filter;
+package org.spring.datingsite.auth.filter;
 
-import org.spring.datingsite.entity.UserEntity;
-import org.spring.datingsite.service.UserService;
+import org.spring.datingsite.user.entity.UserEntity;
+import org.spring.datingsite.user.UserService;
 import org.spring.datingsite.util.CookieUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.filter.OncePerRequestFilter;

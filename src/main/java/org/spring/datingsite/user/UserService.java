@@ -1,13 +1,12 @@
-package org.spring.datingsite.service;
+package org.spring.datingsite.user;
 
-import org.spring.datingsite.entity.InvitationEntity;
-import org.spring.datingsite.entity.SearchEntity;
-import org.spring.datingsite.entity.UserEntity;
-import org.spring.datingsite.enums.InvitationStateEnum;
+import org.spring.datingsite.invitation.entity.InvitationEntity;
+import org.spring.datingsite.user.entity.SearchEntity;
+import org.spring.datingsite.user.entity.UserEntity;
+import org.spring.datingsite.invitation.enums.InvitationStateEnum;
 import org.spring.datingsite.exception.EmailAlreadyExistsException;
 import org.spring.datingsite.exception.InvalidPasswordException;
-import org.spring.datingsite.repository.InvitationRepo;
-import org.spring.datingsite.repository.UserRepository;
+import org.spring.datingsite.invitation.InvitationRepo;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -137,7 +136,7 @@ public class UserService {
         ArrayList<InvitationEntity> invitations = invitationRepo.findManyByUserId(userId);
         ArrayList<UserEntity> inviters = new ArrayList<>();
         invitations.forEach(invitation -> {
-            if (!invitation.getIsAccepted()) {
+            if (!invitation.isAccepted()) {
                 UserEntity user = userRepository.findById(invitation.getFromUserId());
                 user.setAge(calculateAge(user.getBirthDate()));
                 inviters.add(user);
@@ -155,7 +154,7 @@ public class UserService {
     }
 
     private InvitationStateEnum getState(InvitationEntity invitation, boolean isFromUser) {
-        return invitation.getIsAccepted()
+        return invitation.isAccepted()
                 ? InvitationStateEnum.ACCEPTED
                 : isFromUser
                     ? InvitationStateEnum.PENDING_INVITER

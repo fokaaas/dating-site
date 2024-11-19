@@ -1,9 +1,8 @@
-package org.spring.datingsite.controller;
+package org.spring.datingsite.user;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.spring.datingsite.entity.SearchEntity;
-import org.spring.datingsite.entity.UserEntity;
-import org.spring.datingsite.service.UserService;
+import org.spring.datingsite.user.entity.SearchEntity;
+import org.spring.datingsite.user.entity.UserEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
