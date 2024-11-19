@@ -1,6 +1,6 @@
 package org.spring.datingsite;
 
-import org.spring.datingsite.filter.AuthFilter;
+import org.spring.datingsite.auth.filter.AuthFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;

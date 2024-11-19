@@ -1,8 +1,8 @@
-package org.spring.datingsite.controller;
+package org.spring.datingsite.auth;
 
 import jakarta.servlet.http.HttpServletResponse;
-import org.spring.datingsite.entity.UserEntity;
-import org.spring.datingsite.service.UserService;
+import org.spring.datingsite.user.entity.UserEntity;
+import org.spring.datingsite.user.UserService;
 import org.spring.datingsite.util.CookieUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

@@ -1,6 +1,6 @@
-package org.spring.datingsite.repository;
+package org.spring.datingsite.invitation;
 
-import org.spring.datingsite.entity.InvitationEntity;
+import org.spring.datingsite.invitation.entity.InvitationEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class InvitationRepo {
     public void update(String fromUserId, String toUserId, boolean isAccepted) {
         for (InvitationEntity invitation : invitations) {
             if (invitation.getFromUserId().equals(fromUserId) && invitation.getToUserId().equals(toUserId)) {
-                invitation.setIsAccepted(isAccepted);
+                invitation.setAccepted(isAccepted);
             }
         }
     }
